@@ -1,0 +1,26 @@
+import os
+from simpledbf import Dbf5
+import pandas as pd
+
+input_folder = r'C:\Users\mtreu\Desktop\AYP\DISTRIBUCION SPP\SPP\wgs84'
+# Define la carpeta donde deseas guardar los archivos CSV
+output_folder = r'C:\Users\mtreu\Desktop\AYP\DISTRIBUCION SPP\SPP\wgs84\csv'
+
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+
+dbf_files = [f for f in os.listdir(input_folder) if f.endswith('.dbf')]
+
+for dbf_file in dbf_files:
+    dbf_path = os.path.join(input_folder, dbf_file)
+    csv_path = os.path.join(output_folder, dbf_file.replace('.dbf', '.csv'))
+    
+    # Leer el archivo DBF
+    dbf = Dbf5(dbf_path)
+    df = dbf.to_dataframe()
+    
+    # Guardar el DataFrame como CSV
+    df.to_csv(csv_path, index=False)
+    print(f"Archivo convertido y guardado: {csv_path}")
+
+print("Todos los archivos DBF han sido convertidos a CSV.")
